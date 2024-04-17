@@ -49,5 +49,9 @@ def determinant():
         case 3: 
             print(determinant_general_inverse(A))
     
+    result = (f"Matriks:\n{A}\nDeterminan:\n{determinant_gauss_elimination(A) | determinant_gauss_jordan_elimination(A) | determinant_general_inverse(A)}\n")
+    with open("readme.txt", "a") as file:
+        file.write(result)
+    
 
 

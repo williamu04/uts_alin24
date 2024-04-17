@@ -18,12 +18,9 @@ def lu_factorization():
     matrix = np.array(matrix)
 
     # Compute the LU factorization
-    P, L, U = lu(matrix, permute_l=True)
+    L, U = lu(matrix, permute_l=True)
 
     # Print the results
+    # print("P = \n", P)
     print("L = \n", L)
     print("U = \n", U)
-    print("P = \n", P)
-
-# Call the function
-lu_factorization()

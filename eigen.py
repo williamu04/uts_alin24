@@ -1,30 +1,31 @@
 import numpy as np
+import scipy.linalg
 
-def char_poly_eigen():
-    # Prompt the user to enter the number of rows and columns
-    n_rows = int(input("Enter the number of rows: "))
-    n_cols = int(input("Enter the number of columns: "))
+def polinom_eigen():
+    n = int(input("Masukkan jumlah baris/kolom: "))
 
-    # Initialize the matrix as a list of lists
-    matrix = []
-    for i in range(n_rows):
-        row = list(map(float, input(f"Enter row {i+1}: ").split()))
-        if len(row)!= n_cols:
-            raise ValueError("Invalid number of elements in row")
-        matrix.append(row)
+    print(f"Masukkan koefisien matriks A (ukuran {n}x{n}):")
+    A = []
+    for _ in range(n):
+        row = [float(x) for x in input().split()]
+        A.append(row)
+    A = np.array(A)
 
-    # Compute the characteristic polynomial
-    char_poly = np.poly(matrix)
+    eigenvalues, eigenvectors = scipy.linalg.eig(A)
+    poly_char = np.poly(eigenvalues)
+    diagonal_matrix = np.diag(eigenvalues)
+    inverse_eigenvectors = np.linalg.inv(eigenvectors)
+    diagonalized_matrix = np.matmul(np.matmul(eigenvectors, diagonal_matrix), inverse_eigenvectors)
 
-    # Compute the eigenvalues and eigenvectors
-    eigenvalues, eigenvectors = np.linalg.eig(matrix)
+    print("Polinomial Karakteristik:")
+    print(poly_char)
+    print("Eigenvalues:")
+    print(eigenvalues)
+    print("Eigenvector (P):")
+    print(eigenvectors)
+    print("P^-1:")
+    print(inverse_eigenvectors)
 
-    # Compute the characteristic polynomial, eigenvalues, and eigenvectors
-    char_poly, eigenvalues, eigenvectors = char_poly_eigen(matrix)
-
-    # Print the results
-    print("Characteristic polynomial: \n", char_poly)
-    print("Eigenvalues: \n", eigenvalues)
-    print("Eigenvectors: \n", eigenvectors)
-
-char_poly_eigen()
+    result = (f"Polinomial Karakteristik:\n{poly_char}\nEigenvalues:\n{eigenvalues}\nEigenvector (P):\n{eigenvectors}\nP^-1:\n{inverse_eigenvectors}\n")
+    with open("readme.txt", "a") as file:
+        file.write(result)

@@ -24,3 +24,7 @@ def lu_factorization():
     # print("P = \n", P)
     print("L = \n", L)
     print("U = \n", U)
+
+    result = (f"Matrix Original:\n{matrix}\nFaktor L:\n{L}\nFaktro U:\n{U}\n")
+    with open("readme.txt", "a") as file:
+        file.write(result)

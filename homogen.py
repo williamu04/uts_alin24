@@ -4,9 +4,9 @@ import scipy.linalg
 
 def persamaan(n):
     print("Contoh penulisan: 3a +2b - 4c - 19d = 2")
-    
-    kiri_matrix = []  
-    kanan_matrix = []  
+
+    kiri_matrix = []
+    kanan_matrix = []
     variables = set()
 
     for _ in range(n):
@@ -14,31 +14,40 @@ def persamaan(n):
 
         equation = equation.replace(" ", "").split("=")
         kiri = equation[0]
-        kiri_terms = re.split(r"([+-])", kiri)  
+        kiri_terms = re.split(r"([+-])", kiri)
         kiri_coefficients = []
         for term in kiri_terms:
-            if term != "+" and term != "-":
-                coefficient = term[:-1]  
+            if term!= "+" and term!= "-":
+                coefficient = term[:-1]
                 if coefficient == "":
-                    coefficient = "1"  
+                    coefficient = "1"
                 kiri_coefficients.append(float(coefficient))
                 variable = term[-1]
                 variables.add(variable)
         kiri_matrix.append(kiri_coefficients)
         kanan = float(equation[1])
         kanan_matrix.append(kanan)
-        
+
     kiri_matrix = np.array(kiri_matrix)
     kanan_matrix = np.array(kanan_matrix)
     variables = np.sort(np.array(list(variables)))
     return kiri_matrix, kanan_matrix, variables
 
+def write_result_to_file(c, x):
+    with open("readme.txt", "a") as file:
+        file.write("Hasil:\n")
+        index = 0
+        while index <= len(c):
+            result = str(c[index]) + " = " + str(x[index]) + "\n"
+            file.write(result)
+            index += 1
+
 def spl_solution(matrix1, matrix2):
     baris, kolom = matrix1.shape
-    if baris != kolom:
+    if baris!= kolom:
         return "\nHasil = Tidak ada solusi"
     a = scipy.linalg.det(matrix1)
-    if a != 0:
+    if a!= 0:
         return "\nHasil = Solusi unik"
     matrix_aug = np.hstack((matrix1, matrix2.reshape(-1, 1)))
     matrix_ref = np.linalg.matrix_rank(matrix_aug)
@@ -51,7 +60,7 @@ def spl_solution(matrix1, matrix2):
     else:
         return "\nHasil = Solusi unik"
 
-def spl_variabel(): 
+def spl_variabel():
     n = int(input("Jumlah persamaan yang akan dihitung: "))
     matrix1, matrix2, c = persamaan(n)
 
@@ -63,10 +72,11 @@ def spl_variabel():
         for index in range(len(c)):
             hasil = "{} = {}".format(c[index], x[index])
             print(hasil)
+            write_result_to_file(c, x)
 
     elif solution == "\nHasil = Solusi tak terbatas":
-        particular_solution = scipy.linalg.lstsq(matrix1[:, :-1], matrix2)[0]
-        null_space = scipy.linalg.null_space(matrix1[:, :-1])
+        particular_solution, residuals, rank, s = np.linalg.lstsq(matrix1, matrix2, rcond=None)
+        null_space = scipy.linalg.null_space(matrix1)
         print("Solusi dalam bentuk parameter:")
         for i in range(null_space.shape[1]):
             param = "p" + str(i + 1)

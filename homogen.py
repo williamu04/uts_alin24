@@ -30,7 +30,7 @@ def persamaan(n):
 
     sistem = (f"Persamaan:\n{equation}\n")
     with open("readme.txt", "a") as file:
-        file.write(result)
+        file.write(sistem)
     kiri_matrix = np.array(kiri_matrix)
     kanan_matrix = np.array(kanan_matrix)
     variables = np.sort(np.array(list(variables)))

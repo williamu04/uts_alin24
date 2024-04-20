@@ -41,6 +41,7 @@ def solve_gauss_jordan():
 
     print(f"Masukkan vektor b (ukuran {n}):")
     B = np.array([float(x) for x in input().split()])
+    B_trans = B.transpose()
 
     solution = method_gauss_jordan(A, B)
 
@@ -61,5 +62,6 @@ def solve_gauss_jordan():
             print(f"x{i+1} = {sol}")
             result += (f"x{i+1} = {sol}\n")
 
+    hasil = (f"Matrix A:\n{A}\nMatrix B:\n{B}\nSolusi:\n{result}\n")
     with open("readme.txt", "a") as file:
-        file.write(result)
+        file.write(hasil)

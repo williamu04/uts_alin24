@@ -28,19 +28,13 @@ def persamaan(n):
         kanan = float(equation[1])
         kanan_matrix.append(kanan)
 
+    sistem = (f"Persamaan:\n{equation}\n")
+    with open("readme.txt", "a") as file:
+        file.write(result)
     kiri_matrix = np.array(kiri_matrix)
     kanan_matrix = np.array(kanan_matrix)
     variables = np.sort(np.array(list(variables)))
     return kiri_matrix, kanan_matrix, variables
-
-def write_result_to_file(c, x):
-    with open("readme.txt", "a") as file:
-        file.write("Hasil:\n")
-        index = 0
-        while index <= len(c):
-            result = str(c[index]) + " = " + str(x[index]) + "\n"
-            file.write(result)
-            index += 1
 
 def spl_solution(matrix1, matrix2):
     baris, kolom = matrix1.shape
@@ -72,12 +66,11 @@ def spl_variabel():
         for index in range(len(c)):
             hasil = "{} = {}".format(c[index], x[index])
             print(hasil)
-            write_result_to_file(c, x)
 
     elif solution == "\nHasil = Solusi tak terbatas":
         particular_solution, residuals, rank, s = np.linalg.lstsq(matrix1, matrix2, rcond=None)
         null_space = scipy.linalg.null_space(matrix1)
         print("Solusi dalam bentuk parameter:")
         for i in range(null_space.shape[1]):
-            param = "p" + str(i + 1)
+            param = "x" + str(i + 1)
             print(f"x{i + 1} = {particular_solution[i]} + {param} * {null_space[:, i]}")
